@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="/scripts/jquery.min.js"></script>
+  <script src="/chessboardjs-0.3.0/js/chessboard-0.3.0.min.js" type="text/javascript"></script>
+  <script src="/scripts/chess.js"></script>
+  <link href="/chessboardjs-0.3.0/chessboard-0.3.0.min.css" rel="stylesheet"></link>
+</head>
+<body>
+
+<div class="chessboard" id="annotation-board" style="margin: 0 auto; width: 400px;"></div>
+
+<div style="margin: 5px auto; width: 400px;">
+<input type="button" id="startPositionBtn" value="|<" />
+<input type="button" id="prevBtn" value="<" />
+<input type="button" id="nextBtn" value=">" />
+<input type="button" id="endPositionBtn" value=">|" />
+<p><span id="annotation-window"></span></p>
+</div>
+<script type="text/javascript">
+$(function() {
+  var cfg = {
+    pieceTheme: '/chessboardjs-0.3.0/img/chesspieces/wikipedia/{piece}.png',
+    position: 'start'
+  };
+  var board = ChessBoard('annotation-board', cfg);
+  var game = new Chess();
+
+  // 1. Load a PGN into the game
+  
+  var pgn = '1. e4 e5 2. f4 Bc5 3. Nf3 d6 4. c3 Bg4 5. fxe5 Bxf3 6. Qxf3 dxe5 7. Bc4 Nf6 8. d3 O-O 9. Bg5 Nbd7 10. Nd2 c6 11. O-O-O b5 12. Bb3 Be7 13. h4 Nc5 14. Bc2 Ne6 15. g4 g6 16. Bxf6 Bxf6 17. g5 Bg7 18. Rdg1 Nf4 19. Nf1 Kh8 20. Ne3 Qc7 21. h5 gxh5 22. Rxh5 Nxh5 23. Qxh5 Rae8 24. Nf5 Re6 25. Rh1 h6 26. gxh6 Bf6 27. Qg4 Rg8 28. Qg7+ Rxg7 29. hxg7+ Kg8 30. Rh8# 1-0'
+  
+  game.load_pgn(pgn);
+
+  // 1b.  display the pgn string below
+  
+  $('#annotation-window').html(pgn);
+  
+  // 2. Get the full move history
+  var history = game.history();
+  var comments = game.comments();
+  game.reset();
+  var i = 0;
+  
+  // 3. If Next button clicked, move forward one
+  $('#nextBtn').on('click', function() {
+    game.move(history[i]);
+    board.position(game.fen());
+    i += 1;
+    
+    if (i > history.length) {
+      i = history.length;
+    }
+  });
+
+
+  // 4. If Prev button clicked, move backward one
+  $('#prevBtn').on('click', function() {
+    game.undo();
+    board.position(game.fen());
+    i -= 1;
+    if (i < 0) {
+      i = 0;
+    }
+  });
+  // 5. If Start button clicked, go to start position
+  $('#startPositionBtn').on('click', function() {
+    game.reset();
+    board.start();
+    i = 0;
+  });
+
+  // 6. If End button clicked, go to end position
+  $('#endPositionBtn').on('click', function() {
+    game.load_pgn(pgn);
+    board.position(game.fen());
+    i = history.length;
+  });
+
+});
+</script>
+</body>
