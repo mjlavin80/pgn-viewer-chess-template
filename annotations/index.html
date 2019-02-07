@@ -28,7 +28,7 @@ $(function() {
 
   // 1. Load a PGN into the game
   
-  var pgn = '1. e4 e5 2. f4 Bc5 3. Nf3 d6 4. c3 Bg4 5. fxe5 Bxf3 6. Qxf3 dxe5 7. Bc4 Nf6 8. d3 O-O 9. Bg5 Nbd7 10. Nd2 c6 11. O-O-O b5 12. Bb3 Be7 13. h4 Nc5 14. Bc2 Ne6 15. g4 g6 16. Bxf6 Bxf6 17. g5 Bg7 18. Rdg1 Nf4 19. Nf1 Kh8 20. Ne3 Qc7 21. h5 gxh5 22. Rxh5 Nxh5 23. Qxh5 Rae8 24. Nf5 Re6 25. Rh1 h6 26. gxh6 Bf6 27. Qg4 Rg8 28. Qg7+ Rxg7 { if bxg7, 29. hxg7# } 29. hxg7+ Kg8 30. Rh8# 1-0'
+  var pgn = '1. e4 { first annotation } e5 2. f4 Bc5 3. Nf3 d6 4. c3 Bg4 5. fxe5 Bxf3 6. Qxf3 dxe5 7. Bc4 Nf6 8. d3 O-O 9. Bg5 Nbd7 10. Nd2 c6 11. O-O-O b5 12. Bb3 Be7 13. h4 Nc5 14. Bc2 Ne6 15. g4 g6 16. Bxf6 Bxf6 17. g5 Bg7 18. Rdg1 Nf4 19. Nf1 Kh8 20. Ne3 Qc7 21. h5 gxh5 22. Rxh5 Nxh5 23. Qxh5 Rae8 24. Nf5 Re6 25. Rh1 h6 26. gxh6 Bf6 27. Qg4 Rg8 28. Qg7+ Rxg7 29. hxg7+ { If bxg7, hxg7# } Kg8 30. Rh8# { Rh8# } 1-0'
   
   game.load_pgn(pgn);
   
@@ -44,7 +44,7 @@ $(function() {
     board.position(game.fen());
     i += 1;
     $('#annotation-window').html("");
-    if (comments[i] !== null) { $('#annotation-window').html(comments[i]);}
+    if (comments[i-1] !== null) { $('#annotation-window').html(comments[i-1]);}
     
     if (i > history.length) {
       i = history.length;
@@ -61,7 +61,7 @@ $(function() {
       i = 0;
     }
     $('#annotation-window').html("");
-    if (comments[i] !== null) { $('#annotation-window').html(comments[i]);}
+    if (comments[i-1] !== null) { $('#annotation-window').html(comments[i-1]);}
     
   });
 
@@ -71,7 +71,7 @@ $(function() {
     board.start();
     i = 0;
     $('#annotation-window').html("");
-    if (comments[i] !== null) { $('#annotation-window').html(comments[i]);}
+    if (comments[i-1] !== null) { $('#annotation-window').html(comments[i-1]);}
   });
 
   // 6. If End button clicked, go to end position
@@ -80,7 +80,7 @@ $(function() {
     board.position(game.fen());
     i = history.length;
     $('#annotation-window').html("");
-    if (comments[i] !== null) { $('#annotation-window').html(comments[i]);}
+    if (comments[i-1] !== null) { $('#annotation-window').html(comments[i-1]);}
   });
 
 });
