@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="/scripts/jquery.min.js"></script>
-  <script src="/chessboardjs-0.3.0/js/chessboard-0.3.0.min.js" type="text/javascript"></script>
-  <script src="/scripts/chess.js"></script>
-  <link href="/chessboardjs-0.3.0/chessboard-0.3.0.min.css" rel="stylesheet"></link>
+  <script src="../scripts/jquery.min.js"></script>
+  <script src="../chessboardjs-0.3.0/js/chessboard-0.3.0.min.js" type="text/javascript"></script>
+  <script src="../scripts/chess.js"></script>
+  <link href="../chessboardjs-0.3.0/chessboard-0.3.0.min.css" rel="stylesheet"></link>
 </head>
 <body>
 
@@ -20,7 +20,7 @@
 <script type="text/javascript">
 $(function() {
   var cfg = {
-    pieceTheme: '/chessboardjs-0.3.0/img/chesspieces/wikipedia/{piece}.png',
+    pieceTheme: '../chessboardjs-0.3.0/img/chesspieces/wikipedia/{piece}.png',
     position: 'start'
   };
   var board = ChessBoard('annotation-board', cfg);
