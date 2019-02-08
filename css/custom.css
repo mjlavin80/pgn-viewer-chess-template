@@ -1,0 +1,29 @@
+.black-3c85d {
+    background-color: #d6d8db;
+    color: #000000;
+}
+.white-1e1d7 {
+    background-color: #3c83ec;
+    color: #000000;
+}
+.info-box {
+	margin-bottom: 10px; 
+}
+#move-window {
+	min-height: 150px;
+	width: 100%;
+	overflow: scroll;
+}
+#annotation-window {
+	min-height: 150px;
+	width: 100%;
+	overflow: scroll;
+}
+#annotation-board {
+	margin: 0; 
+	width: 100%;
+}
+#controls {
+	margin: 10px; 
+	width: 100%;
+}
