@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Javascript PGN Viewer with Annotations</title>
+
+    <script src="../scripts/jquery.min.js"></script>
+    <script src="../chessboardjs-0.3.0/js/chessboard-0.3.0.min.js" type="text/javascript"></script>
+    <script src="../scripts/chess.js"></script>
+    <link href="../chessboardjs-0.3.0/css/chessboard-0.3.0.min.css" rel="stylesheet"></link>
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this bootstrap template -->
+    <link href="../css/jumbotron.css" rel="stylesheet">
+    <link href="../css/custom.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <a class="navbar-brand" href="../">PGN Viewer Examples</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="../">Home<span class="sr-only">(current)</span></a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="../basic">Basic Viewer</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link " href="../annotations">Annotated</a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="../bootstrap">Annotated with Bootstrap</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link active" href="../custom">Annotated with Custom CSS</a>
+          </li>
+          
+        </ul>
+        
+      </div>
+    </nav>
+
+    <main role="main">
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <div class="container">
+          <h1>Isaias Pleci vs Lucius Endzelins, Buenos Aires, 1939</h1>
+          <p><a href="https://www.chessgames.com/perl/chessgame?gid=1295296">View on Chessgames.com</a></p>
+      </div>
+    </div>
+      <div class="container">
+      <div class="row">
+      <div class="col-md-6">
+        <div class="chessboard" id="annotation-board"></div>
+        <div id="controls">
+          <input type="button" class="btn btn-primary" id="startPositionBtn" value="|<" />
+          <input type="button" class="btn btn-primary" id="prevBtn" value="<" />
+          <input type="button" class="btn btn-primary" id="nextBtn" value=">" />
+          <input type="button" class="btn btn-primary" id="endPositionBtn" value=">|" />
+</div>
+</div>
+<div class="col-md-6">
+<div class="info-box">
+<h4>PGN</h4>
+<p class="list-group-item list-group-item-secondary" id="move-window"></p>
+</div>
+<div class="info-box">
+  <h4>Annotation</h4>
+<p class="list-group-item list-group-item-secondary" id="annotation-window"></p>
+</div>
+      </div>
+      </div>
+      </div>
+    </main>
+    <!-- Placed at the end of the document so the pages load faster -->
+    
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+$(function() {
+  var cfg = {
+    pieceTheme: '../chessboardjs-0.3.0/img/chesspieces/wikipedia/{piece}.png',
+    position: 'start'
+  };
+  var board = ChessBoard('annotation-board', cfg);
+  var game = new Chess();
+
+  // 1. Load a PGN into the game
+  
+  var pgn = '[Event "Buenos Aires Olympiad fin-A"] [Site "Buenos Aires ARG"] [Date "1939.09.06"] [EventDate "?"] [Round "5"] [Result "1-0"] [White "Isaias Pleci"] [Black "Lucius Endzelins"] [ECO "C07"] [WhiteElo "?"] [BlackElo "?"] [PlyCount "41"]  1.e4 e6  2.d4 d5 { The French defense }  3.Nd2 { Tarrasch variation, with the idea of protecting the E pawn and saving the possibility of c3 at some point } c5  4.Ngf3 dxe4  5.Nxe4 Nd7  6.dxc5 Nxc5 { Offering a trade of knights, white\'s knight is hanging } 7.Qxd8+ Kxd8 { A Queen trade at this stage of the game would often suggest a quiet move toward an endgame or a draw }  8.Bg5+ { White gives check but the knight on e4 is still hanging } f6 { Now the knight and the bishop are hanging }  9.O-O-O+ { Another check, but where is this going? } Ke8  10.Bb5+ Kf7 { White appears to be out of checks. How can he continue the attack? } 11.Rd8 { This is the critical position. Why can\'t black just take the hanging knight or the hanging bishop and gain material? If fxg5, Nfg5+, Ke7, Re8#; if Nxe4, Ne5+, cxe5, Be8#; if Ke7, black can hope for Re8+, Kf7, Re8, which might be black\'s best outcome, but white has Rh1d1, which guards the rook, and all the tactics remain for white. } Be7  12.Ne5+ fxe5  13.Nd6+ Kg6  14.Bxe7 Nxe7  15.Rxh8 a6  16.Be2 e4 17.f4 b5  18.Re8 Kf6  19.Rf8+ Kg6  20.h4 Bb7  21.h5+ { Black resigns, presumably, because of forced mate Kh6, Nf7# } 1-0'
+  
+  game.load_pgn(pgn);
+  
+  // 2. Get the full move history
+  var history = game.history();
+  var comments = game.comments();
+  $('#move-window').html(pgn);
+  game.reset();
+  var i = 0;
+  
+  // 3. If Next button clicked, move forward one
+  $('#nextBtn').on('click', function() {
+    game.move(history[i]);
+    board.position(game.fen());
+    i += 1;
+    $('#annotation-window').html("");
+    if (comments[i-1] !== null) { $('#annotation-window').html(comments[i-1]);}
+    
+    if (i > history.length) {
+      i = history.length;
+    }
+  });
+
+
+  // 4. If Prev button clicked, move backward one
+  $('#prevBtn').on('click', function() {
+    game.undo();
+    board.position(game.fen());
+    i -= 1;
+    if (i < 0) {
+      i = 0;
+    }
+    $('#annotation-window').html("");
+
+    if (comments[i-1] !== null) { $('#annotation-window').html(comments[i-1]);}
+    
+  });
+
+  // 5. If Start button clicked, go to start position
+  $('#startPositionBtn').on('click', function() {
+    game.reset();
+    board.start();
+    i = 0;
+    $('#annotation-window').html("");
+    if (comments[i-1] !== null) { $('#annotation-window').html(comments[i-1]);}
+  });
+
+  // 6. If End button clicked, go to end position
+  $('#endPositionBtn').on('click', function() {
+    game.load_pgn(pgn);
+    board.position(game.fen());
+    i = history.length;
+    $('#annotation-window').html("");
+    if (comments[i-1] !== null) { $('#annotation-window').html(comments[i-1]);}
+  });
+
+});
+</script>
+    </body>
+    </html>    
