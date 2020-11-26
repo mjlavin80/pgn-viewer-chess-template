@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Javascript PGN Viewer with Annotations</title>
+
+    <script src="../scripts/jquery.min.js"></script>
+    <script src="../chessboardjs-0.3.0/js/chessboard-0.3.0.min.js" type="text/javascript"></script>
+    <script src="../scripts/chess.js"></script>
+    <link href="../chessboardjs-0.3.0/css/chessboard-0.3.0.min.css" rel="stylesheet"></link>
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this bootstrap template -->
+    <link href="../css/jumbotron.css" rel="stylesheet">
+    <link href="../css/custom.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <a class="navbar-brand" href="../">PGN Viewer Examples</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="../">Home<span class="sr-only">(current)</span></a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="../basic">Basic Viewer</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link " href="../annotations">Annotated</a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="../bootstrap">Annotated with Bootstrap</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link active" href="../custom">Annotated with Custom CSS</a>
+          </li>
+          
+        </ul>
+        
+      </div>
+    </nav>
+
+    <main role="main">
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <div class="container">
+          <h1>Anthony Miles vs Gyula Sax, Phillips & Drew Kings Tournament, London, 1980</h1>
+          <p><a href="https://www.chessgames.com/perl/chessgame?gid=1097286">View on Chessgames.com</a></p>
+      </div>
+    </div>
+      <div class="container">
+      <div class="row">
+      <div class="col-md-6">
+        <div class="chessboard" id="annotation-board"></div>
+        <div id="controls">
+          <input type="button" class="btn btn-primary" id="startPositionBtn" value="|<" />
+          <input type="button" class="btn btn-primary" id="prevBtn" value="<" />
+          <input type="button" class="btn btn-primary" id="nextBtn" value=">" />
+          <input type="button" class="btn btn-primary" id="endPositionBtn" value=">|" />
+</div>
+</div>
+<div class="col-md-6">
+<div class="info-box">
+  <h4>Annotation</h4>
+<p class="list-group-item list-group-item-secondary" id="annotation-window"></p>
+</div>
+      </div>
+<div class="info-box">
+<h4>Full PGN</h4>
+<p class="list-group-item list-group-item-secondary" id="move-window"></p>
+</div>
+      </div>
+      </div>
+    </main>
+    <!-- Placed at the end of the document so the pages load faster -->
+    
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+$(function() {
+  var cfg = {
+    pieceTheme: '../chessboardjs-0.3.0/img/chesspieces/wikipedia/{piece}.png',
+    position: 'start'
+  };
+  var board = ChessBoard('annotation-board', cfg);
+  var game = new Chess();
+
+  // 1. Load a PGN into the game
+  
+  var pgn = '1.Nf3 Nf6  2.c4 g6  3.Nc3 Bg7  4.e4 d6  5.d4 O-O  6.Be2 e5  7.O-O { the immediate d5 here, to prevent Nc6, looks superior. See Kramnik v. Kasparov, 1994 https://www.chessgames.com/perl/chessgame?gid=1070716 } Nc6  8.d5 { this move initiates a closed game, with lots of slower maneuvering and strategic play } Ne7  9.Ne1 Nd7  10.Bd2 f5 { this move is on brand for this kind of position. Black hopes to challenge the center and possibly attack on the king side  }  11.Rc1 { white counters on the queen side } Nf6  12.f3 f4 { this keep the structure closed and makes the white bishop powerless on the king side } 13.Nd3 g5 { commencing the king side pawn storm. sometimes the rook is maneuvered to g8 before this occurs } 14.c5 Ng6  15.cxd6 { white opens the c file with this exchange } cxd6  16.Nb5 { this feels premature to me. white threatens nc7 and eyes the d6 pawn } Rf7  17.Qc2 { this sets up an interesting tactic of taking the d7 pawn. if black takes back, the bishop on c8 loses a defender } Ne8  18.a4 { protecting the knight? this seems like a waste of time to me } h5 { advancing another pawn since a4 requires to response } 19.Nf2 { black has denied white any good outposts for the knight. presumably Nf2 defends against g4 } Bf8 { preparing the rook maneuver} 20.h3 { mistake? } Rg7  21.Nxa7 { this is the tactic enabled by Qc2 } Bd7 { now the knight hangs } 22.Nb5 Nh4 { attacking g2 and uncovering the rook } 23.Qb3 { looking for counter play } Kh8 { preparation move, removing any tactics that pin the rook to the king } 24.a5 g4 { the point of previous maneuvers } 25.fxg4 hxg4 { a mistake, I think. better to take with the knight or the bishop } 26.hxg4 Nf6  27.Nc7 Nxg4 { black ignores white\'s queen side try } 28.Bxg4 Bxg4  29.Nxg4 Rxg4 { black has achieved all his goals } 30.Rf2 Qg5 { piling up on the pawn } 31.Qh3 { a good but desperate defensive try ... white\'s queen side ambitions are dust } Rg3  32.Qh1 { oof } Rc8  33.Be1 Bh6 { with the idea of attacking the rook, but there is no time. better to try and trade rooks on the c file? } 34.a6 bxa6 { now the knight is pinned because the rook on c1 is unguarded } 35.Rc6 Rg8 { another attacking piece on the g file } 36.Rxd6 { white doesn\'t know how bad things are? } f3  37.Rxa6 { ? } Rxg2+ { black has all the tactics on his side } 38.Rxg2 { white hopes to trade down } Qe3+ { this is devastating } 39.Bf2 { this is bad but everything else is worse } Rxg2+  40.Qxg2 { white is forced to give up the queen } fxg2 { a nice finish. white cannot take the queen because the bishop will take back with mate. if anything else, nf3 is also mate } 0-1'
+  
+  game.load_pgn(pgn);
+  
+  // 2. Get the full move history
+  var history = game.history();
+  var comments = game.comments();
+  $('#move-window').html(pgn);
+  game.reset();
+  var i = 0;
+  
+  // 3. If Next button clicked, move forward one
+  $('#nextBtn').on('click', function() {
+    game.move(history[i]);
+    board.position(game.fen());
+    i += 1;
+    $('#annotation-window').html("");
+    if (comments[i-1] !== null) { $('#annotation-window').html(comments[i-1]);}
+    
+    if (i > history.length) {
+      i = history.length;
+    }
+  });
+
+
+  // 4. If Prev button clicked, move backward one
+  $('#prevBtn').on('click', function() {
+    game.undo();
+    board.position(game.fen());
+    i -= 1;
+    if (i < 0) {
+      i = 0;
+    }
+    $('#annotation-window').html("");
+
+    if (comments[i-1] !== null) { $('#annotation-window').html(comments[i-1]);}
+    
+  });
+
+  // 5. If Start button clicked, go to start position
+  $('#startPositionBtn').on('click', function() {
+    game.reset();
+    board.start();
+    i = 0;
+    $('#annotation-window').html("");
+    if (comments[i-1] !== null) { $('#annotation-window').html(comments[i-1]);}
+  });
+
+  // 6. If End button clicked, go to end position
+  $('#endPositionBtn').on('click', function() {
+    game.load_pgn(pgn);
+    board.position(game.fen());
+    i = history.length;
+    $('#annotation-window').html("");
+    if (comments[i-1] !== null) { $('#annotation-window').html(comments[i-1]);}
+  });
+
+});
+</script>
+    </body>
+    </html>    
